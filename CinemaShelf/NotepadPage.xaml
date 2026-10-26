@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:CinemaShelf"
+    xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+    x:Class="CinemaShelf.NotepadPage"
+    ios:Page.UseSafeArea="True"
+    BackgroundColor="#0D0B1A"
+    Title="Notepad">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Padding="20,10" RowSpacing="10">
+
+        <!-- Row 0: Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+            <Border Grid.Column="0"
+                    BackgroundColor="#6C3CE1"
+                    StrokeShape="RoundRectangle 8"
+                    Stroke="Transparent"
+                    Padding="8,4"
+                    HeightRequest="{OnPlatform Android=40, Default=28}"
+                    VerticalOptions="Center">
+                <Border.Shadow>
+                    <Shadow Brush="#6C3CE1" Offset="0,0" Radius="12" Opacity="0.6" />
+                </Border.Shadow>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBackClicked" />
+                </Border.GestureRecognizers>
+                <Label Text="◀ Back"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       FontSize="13"
+                       VerticalOptions="Center" />
+            </Border>
+            <Label Grid.Column="1"
+                   Text="✎ N O T E P A D"
+                   TextColor="#E0AAFF"
+                   FontSize="16"
+                   FontAttributes="Bold,Italic"
+                   CharacterSpacing="1"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Row 1: Input area -->
+        <Border Grid.Row="1"
+                Stroke="#B266FF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                BackgroundColor="#1A0A2E"
+                Padding="8"
+                MinimumHeightRequest="80">
+            <Grid RowDefinitions="*,Auto" RowSpacing="8">
+                <Editor x:Name="NoteEditor"
+                        Placeholder="Write a movie/series name or note..."
+                        PlaceholderColor="#9977BB"
+                        TextColor="#E0AAFF"
+                        BackgroundColor="Transparent"
+                        FontSize="14"
+                        AutoSize="TextChanges"
+                        MinimumHeightRequest="60"
+                        MaximumHeightRequest="120" />
+                <Button Grid.Row="1"
+                        x:Name="SaveButton"
+                        Text="✚ Save note"
+                        Clicked="OnSaveClicked"
+                        BackgroundColor="#6C3CE1"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        CornerRadius="8"
+                        Padding="12,4"
+                        HeightRequest="{OnPlatform Android=40, Default=28}"
+                        MinimumHeightRequest="0"
+                        HorizontalOptions="End">
+                    <Button.Shadow>
+                        <Shadow Brush="#6C3CE1" Offset="0,0" Radius="10" Opacity="0.6" />
+                    </Button.Shadow>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Row 2: Ad banner after the input field -->
+        <local:AdBannerView Grid.Row="2" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0,-2,0,0" />
+
+        <!-- Row 3: Notes list -->
+        <Border Grid.Row="3"
+                Stroke="#B266FF"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="#1A0A2E"
+                Padding="10"
+                VerticalOptions="Fill">
+            <Border.Shadow>
+                <Shadow Brush="#B266FF" Offset="0,0" Radius="15" Opacity="0.7" />
+            </Border.Shadow>
+            <Grid>
+                <Label x:Name="EmptyLabel"
+                       Text="No notes yet"
+                       TextColor="#9977BB"
+                       FontSize="16"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="True" />
+                <CollectionView x:Name="NotesCollection">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="local:Note">
+                            <Border Margin="0,4"
+                                    Padding="12,8"
+                                    StrokeShape="RoundRectangle 8"
+                                    Stroke="#3D2066"
+                                    StrokeThickness="1"
+                                    BackgroundColor="#130A22">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <StackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                                        <Label Text="{Binding Text}"
+                                               FontSize="14"
+                                               TextColor="White"
+                                               LineBreakMode="WordWrap" />
+                                        <Label Text="{Binding DateAdded, StringFormat='{0:dd.MM.yyyy  HH:mm}'}"
+                                               FontSize="10"
+                                               TextColor="#9977BB" />
+                                    </StackLayout>
+                                    <Button Grid.Column="1"
+                                            Text="✕"
+                                            BackgroundColor="Transparent"
+                                            TextColor="Red"
+                                            FontSize="18"
+                                            WidthRequest="30"
+                                            HeightRequest="35"
+                                            Padding="0"
+                                            Clicked="OnDeleteNoteClicked"
+                                            CommandParameter="{Binding Id}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Grid x:Name="DeleteNotePopup" IsVisible="False" BackgroundColor="#BB0D0B1A" Padding="30" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ZIndex="10">
+                    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+                        <Label Text="✕"
+                               FontSize="52"
+                               TextColor="#FF4444"
+                               HorizontalOptions="Center" />
+                        <Label Text="Delete this note?"
+                               TextColor="#E0AAFF"
+                               FontSize="20"
+                               FontAttributes="Bold,Italic"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               CharacterSpacing="1" />
+                        <Label Text="This action cannot be undone."
+                               TextColor="#C9A0FF"
+                               FontSize="14"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center" />
+                        <HorizontalStackLayout Spacing="12" HorizontalOptions="Center" Margin="0,10,0,0">
+                            <Button Text="Cancel" Clicked="OnDeleteNoteCancel" BackgroundColor="#3D2066" TextColor="#E0AAFF" FontAttributes="Bold" FontSize="14" CornerRadius="8" BorderColor="#B266FF" BorderWidth="1" Padding="20,6" HeightRequest="32" MinimumHeightRequest="0" />
+                            <Button Text="Delete" Clicked="OnDeleteNoteConfirm" BackgroundColor="#FF4444" TextColor="White" FontAttributes="Bold" FontSize="14" CornerRadius="8" Padding="20,6" HeightRequest="32" MinimumHeightRequest="0" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Row 4: Ad Banner -->
+        <local:AdBannerView Grid.Row="4" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0,-5,0,0" />
+
+        <!-- Row 5: second full-width banner, stacked under the first one -->
+        <local:AdBannerView Grid.Row="5" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0,-2,0,0" />
+    </Grid>
+</ContentPage>
+

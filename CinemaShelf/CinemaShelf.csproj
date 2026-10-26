@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+<TargetFrameworks>net10.0-maccatalyst;net10.0-android36.0;net10.0-ios</TargetFrameworks>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ApplicationId>com.cinemashelf.app</ApplicationId>
+    <ApplicationTitle>CinemaShelf</ApplicationTitle>
+    <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
+<ApplicationVersion>12</ApplicationVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+    <ValidateXcodeVersion>false</ValidateXcodeVersion>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <!-- The UI is English only; MAUI otherwise ships translations for ~30 languages. -->
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <ItemGroup>
+    <MauiIcon Include="Resources\Images\appicon.svg" ForegroundFile="Resources\Images\appiconfg.svg" Color="#2D1B69" />
+    <MauiSplashScreen Include="Resources\Images\appiconfg.svg" Color="#0D0B1A" BaseSize="128,128" />
+    <MauiImage Include="Resources\Images\projector.svg" />
+    <MauiImage Remove="Resources\Images\appicon.svg" />
+    <MauiImage Remove="Resources\Images\appiconfg.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Platforms\iOS\PrivacyInfo.xcprivacy" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' Or $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="AddMoviePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>latestMajor</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <PropertyGroup>
+    <UseMauiEssentials>true</UseMauiEssentials>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
+    <PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.100" />
+    <PackageReference Include="Plugin.MauiMTAdmob" Version="2.4.0" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.10.196-beta" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
+  </ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <PackageReference Include="Xamarin.AndroidX.SavedState.SavedState.Ktx" Version="1.5.0.1" />
+    <PackageReference Include="Xamarin.Google.Android.Play.App.Update" Version="2.1.0.19" />
+    <PackageReference Include="Xamarin.Google.Android.Play.App.Update" Version="2.1.0.19" />
+    <GoogleServicesJson Include="Platforms\Android\google-services.json" />
+  </ItemGroup>
+</Project>

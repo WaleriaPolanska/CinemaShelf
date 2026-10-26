@@ -1,0 +1,631 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    x:Name="RootPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:CinemaShelf"
+    xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+    x:Class="CinemaShelf.MainPage"
+    ios:Page.UseSafeArea="True"
+    BackgroundColor="#0D0B1A">
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto" Padding="20,5" RowSpacing="5">
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnBackgroundTapped" />
+        </Grid.GestureRecognizers>
+
+        <!-- Row 0: Logo -->
+        <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Center" Spacing="0" Margin="0">
+            <Image Source="projector.svg"
+                   HeightRequest="50"
+                   WidthRequest="67"
+                   Aspect="AspectFit"
+                   VerticalOptions="Center"
+                   Margin="0,0,-10,0">
+                <Image.IsVisible>
+                    <OnPlatform x:TypeArguments="x:Boolean">
+                        <On Platform="Android" Value="True" />
+                        <On Platform="iOS" Value="False" />
+                        <On Platform="MacCatalyst" Value="False" />
+                    </OnPlatform>
+                </Image.IsVisible>
+            </Image>
+            <Grid VerticalOptions="Center" Margin="0,0,3,0" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto" RowSpacing="-28">
+                <Grid.IsVisible>
+                    <OnPlatform x:TypeArguments="x:Boolean">
+                        <On Platform="Android" Value="False" />
+                        <On Platform="iOS" Value="True" />
+                        <On Platform="MacCatalyst" Value="True" />
+                    </OnPlatform>
+                </Grid.IsVisible>
+                <!-- Two reels on top -->
+                <Label Grid.Row="0" Grid.Column="0" Text="◎◎" TextColor="#FFD700" FontSize="28" HorizontalOptions="Center" Margin="-5,-3,-4,-5"/>
+                <!-- Lens + body -->
+                <Label Grid.Row="1" Grid.Column="1" Text="◃" TextColor="#FFD700" FontSize="44" VerticalOptions="Center" Margin="-9,6,-11,0"/>
+                <Label Grid.Row="1" Grid.Column="0" Text="▬" TextColor="#FFD700" FontSize="67" VerticalOptions="Center" Margin="9,0,6,2"/>
+            </Grid>
+            <Border BackgroundColor="#111111"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 4,0,0,4"
+                    Padding="0"
+                    VerticalOptions="Center"
+                    Margin="15,4,5,0">
+                <Border.Shadow>
+                    <Shadow Brush="#B266FF" Offset="0,0" Radius="10" Opacity="0.5" />
+                </Border.Shadow>
+                <Grid RowDefinitions="Auto,Auto,Auto">
+                    <HorizontalStackLayout Grid.Row="0" Spacing="12" Padding="6,2,6,0" HorizontalOptions="Fill">
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                    </HorizontalStackLayout>
+                    <Label Grid.Row="1"
+                           Text="■▷ C I N E M A  S H E L F"
+                           TextColor="#E0AAFF"
+                           FontSize="12"
+                           FontAttributes="Bold,Italic"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           CharacterSpacing="1"
+                           LineBreakMode="NoWrap"
+                           Padding="6,3" />
+                    <HorizontalStackLayout Grid.Row="2" Spacing="12" Padding="6,0,6,2" HorizontalOptions="Fill">
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                        <BoxView Color="#333" WidthRequest="6" HeightRequest="5" CornerRadius="2" />
+                    </HorizontalStackLayout>
+                </Grid>
+            </Border>
+        </HorizontalStackLayout>
+
+        <!-- Row 1: Settings + Add Movie + Golden -->
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="5">
+            <Border Grid.Column="0"
+                x:Name="SettingsButton"
+                BackgroundColor="#6C3CE1"
+                StrokeShape="RoundRectangle 8"
+                Stroke="Transparent"
+                StrokeThickness="1.5"
+                Padding="8,0"
+                HeightRequest="{OnPlatform Android=38, Default=28}"
+                VerticalOptions="Center"
+                HorizontalOptions="Start">
+                <Border.Shadow>
+                    <Shadow Brush="#6C3CE1" Offset="0,0" Radius="12" Opacity="0.6" />
+                </Border.Shadow>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSettingsClicked" />
+                </Border.GestureRecognizers>
+                <Label Text="&#x2699;&#xFE0E;"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       FontSize="26"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Border>
+            <Button Grid.Column="1"
+                Text="▶  A D D  M O V I E / S E R I E S  ❚❚"
+                Clicked="AddMovie_Clicked"
+                BackgroundColor="#6C3CE1"
+                TextColor="White"
+                FontAttributes="Bold,Italic"
+                FontSize="12"
+                CharacterSpacing="1"
+                CornerRadius="8"
+                BorderColor="Transparent"
+                BorderWidth="1.5"
+                Padding="8,0"
+                HeightRequest="{OnPlatform Android=38, Default=28}"
+                MinimumHeightRequest="0">
+                <Button.Shadow>
+                    <Shadow Brush="#6C3CE1" Offset="0,0" Radius="12" Opacity="0.6" />
+                </Button.Shadow>
+            </Button>
+            <Border Grid.Column="2"
+                x:Name="GoldenListButton"
+                BackgroundColor="#B8860B"
+                StrokeShape="RoundRectangle 8"
+                Stroke="#FFD700"
+                StrokeThickness="1.5"
+                Padding="12,6"
+                MinimumHeightRequest="0"
+                VerticalOptions="Center">
+                <Border.Shadow>
+                    <Shadow Brush="#FFD700" Offset="0,0" Radius="12" Opacity="0.7" />
+                </Border.Shadow>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="GoldenList_Clicked" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="4">
+                    <Label Text="★"
+                           TextColor="#FFD700"
+                           FontSize="{OnPlatform Android=20, Default=16}"
+                           VerticalOptions="Center" />
+                    <Label Text="Golden"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           FontSize="{OnPlatform Android=15, Default=12}"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+        </Grid>
+
+        <!-- Row 2: Search bar -->
+        <Border Grid.Row="2"
+                Stroke="#B266FF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                BackgroundColor="#1A0A2E"
+                Padding="8,0,0,0"
+                Margin="0,0,0,20"
+                HeightRequest="{OnPlatform Android=40, Default=28}">
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry Grid.Column="0"
+                    x:Name="SearchEntry"
+                    Placeholder="Search in your list..."
+                    ClearButtonVisibility="WhileEditing"
+                    PlaceholderColor="#9977BB"
+                    TextColor="#E0AAFF"
+                    BackgroundColor="Transparent"
+                    FontSize="16"
+                    TextChanged="OnSearchTextChanged"
+                    VerticalOptions="Center" />
+                <Button Grid.Column="1"
+                    x:Name="SearchButton"
+                    Text="⌕"
+                    Clicked="OnSearchButtonClicked"
+                    BackgroundColor="#6C3CE1"
+                    TextColor="White"
+                    FontSize="20"
+                    WidthRequest="{OnPlatform Android=60, Default=80}"
+                    HeightRequest="{OnPlatform Android=40, Default=28}"
+                    MinimumHeightRequest="0"
+                    CornerRadius="8"
+                    BorderColor="#B266FF"
+                    BorderWidth="1.5"
+                    Margin="0"
+                    Padding="0"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End">
+                    <Button.Shadow>
+                        <Shadow Brush="#B266FF" Offset="0,0" Radius="12" Opacity="0.7" />
+                    </Button.Shadow>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Row 3: Toolbar buttons -->
+        <!-- Row 3: Ad banner under the search field -->
+        <local:AdBannerView Grid.Row="3" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0,-2,0,0" />
+
+        <Grid Grid.Row="4" ColumnDefinitions="*,Auto" ColumnSpacing="3">
+            <HorizontalStackLayout Grid.Column="0" Spacing="3">
+                <Button
+                    x:Name="SortButton"
+                    Text="▼ Sort"
+                    Clicked="OnSortClicked"
+                    BackgroundColor="#1A0A2E"
+                    TextColor="#E0AAFF"
+                    FontAttributes="Bold"
+                    FontSize="11"
+                    CornerRadius="6"
+                    BorderColor="#B266FF"
+                    BorderWidth="1"
+                    Padding="6,0"
+                    HeightRequest="26"
+                    MinimumHeightRequest="0" />
+                <Button
+                    x:Name="FormatButton"
+                    Text="▼ Format"
+                    Clicked="OnFormatClicked"
+                    BackgroundColor="#1A0A2E"
+                    TextColor="#E0AAFF"
+                    FontAttributes="Bold"
+                    FontSize="11"
+                    CornerRadius="6"
+                    BorderColor="#B266FF"
+                    BorderWidth="1"
+                    Padding="6,0"
+                    HeightRequest="26"
+                    MinimumHeightRequest="0" />
+                <Button
+                    x:Name="ShareButton"
+                    Text="&#x21E7; Share"
+                    Clicked="OnShareClicked"
+                    BackgroundColor="#1A0A2E"
+                    TextColor="#E0AAFF"
+                    FontAttributes="Bold"
+                    FontSize="11"
+                    CornerRadius="6"
+                    BorderColor="#B266FF"
+                    BorderWidth="1"
+                    Padding="6,0"
+                    HeightRequest="26"
+                    MinimumHeightRequest="0" />
+            </HorizontalStackLayout>
+            <Button
+                Grid.Column="1"
+                x:Name="ClearAllButton"
+                Text="&#x2715; Clear All"
+                Clicked="OnClearAllClicked"
+                BackgroundColor="#1A0A2E"
+                TextColor="#FF4444"
+                FontAttributes="Bold"
+                FontSize="11"
+                CornerRadius="6"
+                BorderColor="#FF4444"
+                BorderWidth="1.5"
+                Padding="6,0"
+                HeightRequest="26"
+                MinimumHeightRequest="0"
+                WidthRequest="{OnPlatform iOS=70, Default=85}"
+                HorizontalOptions="End" />
+        </Grid>
+
+        <!-- Format dropdown (overlays list) -->
+        <Border
+            Grid.Row="5"
+            x:Name="FormatDropdown"
+            IsVisible="False"
+            Stroke="#B266FF"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 8"
+            BackgroundColor="#1A0A2E"
+            Padding="0"
+            Margin="50,0,0,0"
+            VerticalOptions="Start"
+            HorizontalOptions="Start"
+            ZIndex="200">
+            <VerticalStackLayout Spacing="0">
+                <Grid HeightRequest="{OnPlatform iOS=44, Default=35}">
+                    <BoxView x:Name="FormatAllBg" Color="#1A0A2E" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Label x:Name="FormatAllLabel" Text="✦ All" TextColor="#E0AAFF" FontSize="16" VerticalOptions="Center" Padding="10,0" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFormatItemClicked" CommandParameter="All" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+                <BoxView HeightRequest="1" Color="#B266FF" Opacity="0.3" />
+                <Grid HeightRequest="{OnPlatform iOS=44, Default=35}">
+                    <BoxView x:Name="FormatMoviesBg" Color="#1A0A2E" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Label x:Name="FormatMoviesLabel" Text="▷ Movies" TextColor="#E0AAFF" FontSize="16" VerticalOptions="Center" Padding="10,0" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFormatItemClicked" CommandParameter="Movies" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+                <BoxView HeightRequest="1" Color="#B266FF" Opacity="0.3" />
+                <Grid HeightRequest="{OnPlatform iOS=44, Default=35}">
+                    <BoxView x:Name="FormatSeriesBg" Color="#1A0A2E" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Label x:Name="FormatSeriesLabel" Text="■ Series" TextColor="#E0AAFF" FontSize="16" VerticalOptions="Center" Padding="10,0" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFormatItemClicked" CommandParameter="Series" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Sort dropdown (overlays list) -->
+        <Border
+            Grid.Row="5"
+            x:Name="SortDropdown"
+            IsVisible="False"
+            Stroke="#B266FF"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 8"
+            BackgroundColor="#1A0A2E"
+            Padding="0"
+            Margin="0,0,0,0"
+            VerticalOptions="Start"
+            HorizontalOptions="Start"
+            ZIndex="201">
+            <VerticalStackLayout Spacing="0">
+                <Grid HeightRequest="{OnPlatform iOS=44, Default=35}">
+                    <BoxView x:Name="SortByNameBg" Color="#1A0A2E" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Label x:Name="SortByNameLabel" Text="A → Z" TextColor="#E0AAFF" FontSize="16" VerticalOptions="Center" Padding="10,0" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSortByNameTapped" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+                <BoxView HeightRequest="1" Color="#B266FF" Opacity="0.3" />
+                <Grid HeightRequest="{OnPlatform iOS=44, Default=35}">
+                    <BoxView x:Name="SortByDateBg" Color="#1A0A2E" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Label x:Name="SortByDateLabel" Text="New → Old" TextColor="#E0AAFF" FontSize="16" VerticalOptions="Center" Padding="10,0" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSortByDateTapped" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Settings dropdown (overlays below settings button) -->
+        <Border
+            Grid.Row="2"
+            Grid.RowSpan="3"
+            x:Name="SettingsDropdown"
+            IsVisible="False"
+            Stroke="#B266FF"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 8"
+            BackgroundColor="#1A0A2E"
+            Padding="0"
+            Margin="0,0,0,0"
+            VerticalOptions="Start"
+            HorizontalOptions="Start"
+            ZIndex="202">
+            <VerticalStackLayout Spacing="0">
+                <Button Text="▲ Export" Clicked="OnExportClicked" BackgroundColor="Transparent" TextColor="#E0AAFF" FontSize="14" HeightRequest="34" Padding="10,0" HorizontalOptions="Fill" />
+                <BoxView HeightRequest="1" Color="#B266FF" Opacity="0.3" />
+                <Button Text="▼ Import" Clicked="OnImportClicked" BackgroundColor="Transparent" TextColor="#E0AAFF" FontSize="14" HeightRequest="34" Padding="10,0" HorizontalOptions="Fill" />
+                <BoxView x:Name="PrivacySeparator" IsVisible="False" HeightRequest="1" Color="#B266FF" Opacity="0.3" />
+                <Button x:Name="PrivacyOptionsButton" IsVisible="False" Text="⛉ Ad privacy" Clicked="OnPrivacyOptionsClicked" BackgroundColor="Transparent" TextColor="#E0AAFF" FontSize="14" HeightRequest="34" Padding="10,0" HorizontalOptions="Fill" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Row 4: Movie list -->
+        <Border
+            Grid.Row="5"
+            Stroke="#B266FF"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 12"
+            BackgroundColor="#1A0A2E"
+            Padding="10"
+            VerticalOptions="Fill">
+            <Border.Shadow>
+                <Shadow Brush="#B266FF" Offset="0,0" Radius="15" Opacity="0.7" />
+            </Border.Shadow>
+            <Grid RowDefinitions="Auto,*">
+                <Label Grid.RowSpan="2" x:Name="EmptyLabel"
+                       Text="Your movie/series list is empty"
+                       TextColor="#9977BB"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="True" />
+                <Grid Grid.Row="0" x:Name="SelectAllRow" IsVisible="False" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,3">
+                    <Border Padding="4,2" StrokeShape="RoundRectangle 8" Stroke="#B266FF" StrokeThickness="1" BackgroundColor="#1A0A2E" HeightRequest="{OnPlatform Android=40, Default=28}" HorizontalOptions="Start">
+                        <HorizontalStackLayout Spacing="0">
+                            <CheckBox x:Name="SelectAllCheckBox" Color="#B266FF" VerticalOptions="Center" CheckedChanged="OnSelectAllCheckChanged" />
+                            <Label Text="All" TextColor="#E0AAFF" FontSize="16" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,8,0" />
+                        </HorizontalStackLayout>
+                    </Border>
+                    <Button Grid.Column="2" x:Name="OkButton" Text="OK" Clicked="OnOkClicked" BackgroundColor="#6C3CE1" TextColor="White" FontAttributes="Bold" FontSize="14" CornerRadius="8" BorderColor="#B266FF" BorderWidth="1.5" Padding="16,2" HeightRequest="{OnPlatform Android=40, Default=28}" MinimumHeightRequest="0" HorizontalOptions="End" VerticalOptions="Center">
+                        <Button.Shadow>
+                            <Shadow Brush="#B266FF" Offset="0,0" Radius="12" Opacity="0.7" />
+                        </Button.Shadow>
+                    </Button>
+                </Grid>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Movies}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="local:Movie">
+                            <VerticalStackLayout Spacing="0">
+                                <Border
+                                Margin="0,5"
+                                Padding="10"
+                                StrokeShape="RoundRectangle 8"
+                                Stroke="#3D2066"
+                                StrokeThickness="1"
+                                BackgroundColor="#130A22">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BackgroundColor" Value="#130A22" />
+                                        <Style.Triggers>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsInBothLists}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="#2A1A33" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnMovieTapped" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="48,Auto,*,Auto" ColumnSpacing="3">
+                                    <Border Grid.Column="0"
+                                            BackgroundColor="Transparent"
+                                            StrokeThickness="0"
+                                            WidthRequest="46"
+                                            HeightRequest="40"
+                                            Margin="-2,0,0,0"
+                                            Padding="0"
+                                            IsVisible="{Binding ShowTrophy}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="GoldenToggle_Clicked" CommandParameter="{Binding Id}" />
+                                        </Border.GestureRecognizers>
+                                        <Label Text="★"
+                                               TextColor="{Binding TrophyColor}"
+                                               Opacity="{Binding TrophyOpacity}"
+                                               FontSize="20"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+                                    <CheckBox Grid.Column="0"
+                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                              Color="#B266FF"
+                                              VerticalOptions="Center"
+                                              CheckedChanged="OnCheckBoxCheckedChanged"
+                                              IsVisible="{Binding IsSelectionMode}" />
+                                    <Image Grid.Column="1"
+                                           Source="{Binding PosterUrl}"
+                                           HeightRequest="70"
+                                           WidthRequest="47"
+                                           Aspect="AspectFill"
+                                           Margin="0,0,5,0" />
+                                    <StackLayout Grid.Column="2" VerticalOptions="Center" Spacing="2">
+                                        <Label Text="{Binding Title}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               LineBreakMode="TailTruncation" />
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="{Binding ContentTypeIcon}" FontSize="11" TextColor="White" />
+                                            <Label Text="{Binding Year}" FontSize="13" TextColor="#CC99FF" />
+                                        </HorizontalStackLayout>
+                                        <Label Text="{Binding Rating, StringFormat='★ {0:F1}'}" FontSize="13" TextColor="#EEDDFF" />
+                                        <Label Text="{Binding Description}" FontSize="10" TextColor="#9977BB" LineBreakMode="WordWrap" />
+                                    </StackLayout>
+                                    <Button Grid.Column="3"
+                                            Text="✕"
+                                            BackgroundColor="Transparent"
+                                            TextColor="Red"
+                                            FontSize="20"
+                                            WidthRequest="30"
+                                            HeightRequest="40"
+                                            Padding="0"
+                                            Clicked="DeleteMovie_Clicked"
+                                            CommandParameter="{Binding Id}" />
+                                </Grid>
+                            </Border>
+                                <local:NativeAdCard
+                                    AdUnitId="ca-app-pub-3940256099942544/2247696110"
+                                    IsVisible="{Binding ShowAdAfter}"
+                                    HeightRequest="140"
+                                    Margin="0,0,0,5" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Grid Grid.RowSpan="2" x:Name="EmptyPopup" IsVisible="False" BackgroundColor="#BB0D0B1A" Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ZIndex="10">
+                    <Border StrokeShape="RoundRectangle 12" Stroke="#B266FF" StrokeThickness="1.5" BackgroundColor="#EE1A0A2E" Padding="25,20" HorizontalOptions="Center" VerticalOptions="Center" MaximumWidthRequest="320">
+                        <Border.Shadow>
+                            <Shadow Brush="#B266FF" Offset="0,0" Radius="20" Opacity="0.7" />
+                        </Border.Shadow>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                            <Label Text="Movie/Series list is empty!"
+                                   TextColor="#E0AAFF"
+                                   FontSize="18"
+                                   FontAttributes="Bold,Italic"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   CharacterSpacing="1">
+                                <Label.Shadow>
+                                    <Shadow Brush="#B266FF" Offset="0,0" Radius="15" Opacity="0.8" />
+                                </Label.Shadow>
+                            </Label>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+                <Grid Grid.RowSpan="2" x:Name="InfoPopup" IsVisible="False" BackgroundColor="#BB0D0B1A" Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ZIndex="12">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnInfoPopupDismissed" />
+                    </Grid.GestureRecognizers>
+                    <Border StrokeShape="RoundRectangle 12" Stroke="#B266FF" StrokeThickness="1.5" BackgroundColor="#EE1A0A2E" Padding="25,20" HorizontalOptions="Center" VerticalOptions="Center" MaximumWidthRequest="320">
+                        <Border.Shadow>
+                            <Shadow Brush="#B266FF" Offset="0,0" Radius="20" Opacity="0.7" />
+                        </Border.Shadow>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                            <Label x:Name="InfoPopupText"
+                                   Text=""
+                                   TextColor="#E0AAFF"
+                                   FontSize="16"
+                                   FontAttributes="Bold,Italic"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   CharacterSpacing="1">
+                                <Label.Shadow>
+                                    <Shadow Brush="#B266FF" Offset="0,0" Radius="15" Opacity="0.8" />
+                                </Label.Shadow>
+                            </Label>
+                            <Label Text="tap anywhere to dismiss"
+                                   TextColor="#7755AA"
+                                   FontSize="11"
+                                   FontAttributes="Italic"
+                                   HorizontalOptions="Center"
+                                   Margin="0,5,0,0" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+                <Grid Grid.RowSpan="2" x:Name="DeleteMoviePopup" IsVisible="False" BackgroundColor="#BB0D0B1A" Padding="30" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ZIndex="13">
+                    <VerticalStackLayout x:Name="DeleteMoviePopupContent" HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+                        <Label Text="✕"
+                               FontSize="52"
+                               TextColor="#FF4444"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="DeleteMoviePopupTitle"
+                               Text="Delete this movie?"
+                               TextColor="#E0AAFF"
+                               FontSize="20"
+                               FontAttributes="Bold,Italic"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               CharacterSpacing="1" />
+                        <Label x:Name="DeleteMoviePopupSubtitle"
+                               Text="This action cannot be undone."
+                               TextColor="#C9A0FF"
+                               FontSize="14"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center" />
+                        <HorizontalStackLayout Spacing="12" HorizontalOptions="Center" Margin="0,10,0,0">
+                            <Button Text="Cancel" Clicked="OnDeleteMovieCancel" BackgroundColor="#3D2066" TextColor="#E0AAFF" FontAttributes="Bold" FontSize="14" CornerRadius="8" BorderColor="#B266FF" BorderWidth="1" Padding="20,6" HeightRequest="32" MinimumHeightRequest="0" />
+                            <Button Text="Delete" Clicked="OnDeleteMovieConfirm" BackgroundColor="#FF4444" TextColor="White" FontAttributes="Bold" FontSize="14" CornerRadius="8" Padding="20,6" HeightRequest="32" MinimumHeightRequest="0" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Grid>
+                <Grid Grid.RowSpan="2" x:Name="ClearAllPopup" IsVisible="False" BackgroundColor="#BB0D0B1A" Padding="30" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ZIndex="11">
+                    <VerticalStackLayout x:Name="ClearAllPopupContent" HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+                        <Label Text="✕"
+                               FontSize="52"
+                               TextColor="#FF4444"
+                               HorizontalOptions="Center" />
+                        <Label Text="Delete all movies from the list?"
+                               TextColor="#E0AAFF"
+                               FontSize="20"
+                               FontAttributes="Bold,Italic"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               CharacterSpacing="1" />
+                        <Label Text="This action cannot be undone."
+                               TextColor="#C9A0FF"
+                               FontSize="14"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center" />
+                        <HorizontalStackLayout Spacing="12" HorizontalOptions="Center" Margin="0,10,0,0">
+                            <Button Text="Cancel" Clicked="OnClearAllCancel" BackgroundColor="#3D2066" TextColor="#E0AAFF" FontAttributes="Bold" FontSize="14" CornerRadius="8" BorderColor="#B266FF" BorderWidth="1" Padding="20,6" HeightRequest="32" MinimumHeightRequest="0" />
+                            <Button Text="Delete" Clicked="OnClearAllConfirm" BackgroundColor="#FF4444" TextColor="White" FontAttributes="Bold" FontSize="14" CornerRadius="8" Padding="20,6" HeightRequest="32" MinimumHeightRequest="0" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Row 5: Notepad button -->
+        <Button Grid.Row="6"
+                Text="✎  N O T E P A D"
+                Clicked="OnNotepadClicked"
+                BackgroundColor="#6C3CE1"
+                TextColor="White"
+                FontAttributes="Bold,Italic"
+                FontSize="12"
+                CharacterSpacing="1"
+                CornerRadius="8"
+                BorderColor="Transparent"
+                BorderWidth="1.5"
+                Padding="8,0"
+                HeightRequest="{OnPlatform Android=38, Default=28}"
+                MinimumHeightRequest="0"
+                Margin="0,-2,0,0">
+            <Button.Shadow>
+                <Shadow Brush="#6C3CE1" Offset="0,0" Radius="12" Opacity="0.6" />
+            </Button.Shadow>
+        </Button>
+
+        <!-- Row 7: Ad Banner -->
+        <local:AdBannerView Grid.Row="7" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0,-5,0,0" />
+
+        <!-- Row 8: second full-width banner, stacked rather than split: a half-width
+             banner asks for a size no standard demand matches and stays empty. -->
+        <local:AdBannerView Grid.Row="8" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0,-2,0,0" />
+
+    </Grid>
+</ContentPage>
+

@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:local="clr-namespace:CinemaShelf"
+        xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+	x:Class="CinemaShelf.AddMoviePage"
+	Shell.NavBarIsVisible="False"
+	ios:Page.UseSafeArea="True"
+	BackgroundColor="#0D0B1A">
+	<Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto" Padding="10,5">
+		<!-- Home button -->
+		<Border Grid.Row="0"
+		        Stroke="Transparent"
+		        StrokeThickness="1.5"
+		        StrokeShape="RoundRectangle 8"
+		        BackgroundColor="#6C3CE1"
+		        Padding="8,3"
+		        Margin="0,0"
+		        HorizontalOptions="Fill">
+			<Border.Shadow>
+				<Shadow Brush="#6C3CE1" Offset="0,0" Radius="10" Opacity="0.6" />
+			</Border.Shadow>
+			<Border.GestureRecognizers>
+				<TapGestureRecognizer Tapped="OnHomeClicked" />
+			</Border.GestureRecognizers>
+			<Label Text="✦  H O M E  ✦"
+			       TextColor="White"
+			       FontSize="14"
+			       FontAttributes="Bold,Italic"
+			       HorizontalOptions="Center"
+			       VerticalOptions="Center"
+			       CharacterSpacing="2" />
+		</Border>
+		<!-- Search bar with neon border -->
+		<Border Grid.Row="1"
+		        Stroke="#B266FF"
+		        StrokeThickness="1.5"
+		        StrokeShape="RoundRectangle 8"
+		        BackgroundColor="#1A0A2E"
+		        Padding="8,0,0,0"
+		        Margin="0,2"
+		        HeightRequest="{OnPlatform Android=40, Default=28}">
+			<Border.Shadow>
+				<Shadow Brush="#B266FF" Offset="0,0" Radius="8" Opacity="0.5" />
+			</Border.Shadow>
+			<Grid ColumnDefinitions="*,Auto,Auto">
+				<Entry Grid.Column="0"
+				       Placeholder="Search movie/series..."
+				       ClearButtonVisibility="Never"
+				       TextChanged="OnSearchEntryTextChanged"
+				       PlaceholderColor="#9977BB"
+				       TextColor="White"
+				       BackgroundColor="Transparent"
+				       FontSize="13"
+				       x:Name="SearchEntry"
+				       VerticalOptions="Center"
+				       Completed="OnSearchCompleted" />
+				<Button Grid.Column="1"
+				        x:Name="ClearSearchButton"
+				        Text="✕"
+				        IsVisible="False"
+				        Clicked="OnClearSearchClicked"
+				        WidthRequest="34"
+				        MinimumHeightRequest="0"
+				        BackgroundColor="Transparent"
+				        TextColor="#9977BB"
+				        FontSize="16"
+				        Padding="0"
+				        VerticalOptions="Center" />
+				<Button Grid.Column="2"
+				        Text="⌕"
+				        Clicked="OnSearchClicked"
+				        WidthRequest="40"
+				        MinimumHeightRequest="0"
+				        BackgroundColor="#6C3CE1"
+				        TextColor="White"
+				        FontSize="22"
+				        CornerRadius="0"
+				        Margin="-5,-5,0,-5"
+				        Padding="0"
+				        VerticalOptions="Fill"
+				        HorizontalOptions="End" />
+			</Grid>
+		</Border>
+
+		<!-- Navigation -->
+		<!-- Row 3: Ad banner under the search field -->
+		<local:AdBannerView Grid.Row="3" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0,0,0,-2" />
+
+		<HorizontalStackLayout Grid.Row="2" Padding="0,2" Spacing="3">
+			<Label x:Name="PageTitleLabel" 
+			       Text="Google" 
+			       TextColor="#9977BB"
+			       VerticalOptions="Center"
+			       FontSize="11"
+			       LineBreakMode="TailTruncation"
+			       HorizontalOptions="FillAndExpand" />
+		</HorizontalStackLayout>
+
+		<!-- WebView -->
+		<Border Grid.Row="4"
+		        Stroke="#B266FF"
+		        StrokeThickness="1.5"
+		        StrokeShape="RoundRectangle 8"
+		        Padding="0"
+		        Margin="0,3"
+		        VerticalOptions="Fill"
+		        HorizontalOptions="Fill">
+			<Border.Shadow>
+				<Shadow Brush="#B266FF" Offset="0,0" Radius="8" Opacity="0.5" />
+			</Border.Shadow>
+			<WebView x:Name="BrowserWebView"
+			         Source="https://www.google.com/search?q=&amp;hl=en&amp;gl=US"
+			         Navigating="OnWebViewNavigating"
+			         Navigated="OnWebViewNavigated"
+			         VerticalOptions="Fill"
+			         HorizontalOptions="Fill" />
+		</Border>
+
+		<!-- Screensaver-style loading overlay -->
+		<Border Grid.Row="4"
+		        x:Name="LoadingOverlay"
+		        IsVisible="false"
+		        BackgroundColor="#EE0D0B1A"
+		        StrokeThickness="0"
+		        StrokeShape="RoundRectangle 8"
+		        HorizontalOptions="Fill"
+		        VerticalOptions="Fill"
+		        Margin="0,3"
+		        ZIndex="10"
+		        InputTransparent="true">
+			<VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="12">
+				<Label x:Name="LoadingStarLabel"
+				       Text="✦"
+				       TextColor="#B266FF"
+				       FontSize="44"
+				       FontAttributes="Bold"
+				       HorizontalOptions="Center">
+					<Label.Shadow>
+						<Shadow Brush="#B266FF" Offset="0,0" Radius="20" Opacity="0.9" />
+					</Label.Shadow>
+				</Label>
+				<Label x:Name="LoadingText"
+				       Text="Loading..."
+				       TextColor="#E0AAFF"
+				       FontSize="14"
+				       FontAttributes="Italic"
+				       HorizontalOptions="Center"
+				       HorizontalTextAlignment="Center"
+				       CharacterSpacing="2">
+					<Label.Shadow>
+						<Shadow Brush="#B266FF" Offset="0,0" Radius="10" Opacity="0.6" />
+					</Label.Shadow>
+				</Label>
+			</VerticalStackLayout>
+		</Border>
+
+
+		<!-- Action button -->
+		<Border Grid.Row="5"
+		        x:Name="ActionBorder"
+		        Stroke="Transparent"
+		        StrokeShape="RoundRectangle 8"
+		        BackgroundColor="#6C3CE1"
+		        Padding="0"
+		        Margin="0,2"
+		        HeightRequest="32"
+		        HorizontalOptions="Fill"
+		        IsVisible="false">
+			<Border.GestureRecognizers>
+				<TapGestureRecognizer Tapped="OnActionButtonClicked" />
+			</Border.GestureRecognizers>
+			<HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="4">
+				<Label x:Name="ActionIcon" Text="✦" TextColor="White" FontSize="14" FontAttributes="Bold,Italic" VerticalOptions="Center" />
+				<Label x:Name="ActionLabel" Text="This movie/series" TextColor="White" FontSize="14" FontAttributes="Bold,Italic" VerticalOptions="Center" CharacterSpacing="2" />
+			</HorizontalStackLayout>
+		</Border>
+
+		<!-- Hint overlay -->
+		<Border Grid.Row="0" Grid.RowSpan="8"
+		        x:Name="HintBorder"
+		        IsVisible="false"
+		        Opacity="0"
+		        BackgroundColor="#BB1A0A2E"
+		        StrokeThickness="0"
+		        HorizontalOptions="Fill"
+		        VerticalOptions="Fill"
+		        InputTransparent="false">
+			<Border.GestureRecognizers>
+				<TapGestureRecognizer Tapped="OnHintDismissed" />
+			</Border.GestureRecognizers>
+			<VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15" Padding="30">
+				<Label Text="⌕"
+				       FontSize="60"
+				       TextColor="White"
+				       HorizontalOptions="Center" />
+				<Label Text="Browse and verify the movie/series details"
+				       TextColor="#E0AAFF"
+				       FontSize="22"
+				       FontAttributes="Bold,Italic"
+				       HorizontalOptions="Center"
+				       HorizontalTextAlignment="Center"
+				       CharacterSpacing="1">
+					<Label.Shadow>
+						<Shadow Brush="#B266FF" Offset="0,0" Radius="15" Opacity="0.8" />
+					</Label.Shadow>
+				</Label>
+				<Label Text="Use the browser to check the Movie/Series.&#10;When ready, tap ✦ This Movie/Series&#10;to find it on IMDb."
+				       TextColor="#C9A0FF"
+				       FontSize="15"
+				       HorizontalOptions="Center"
+				       HorizontalTextAlignment="Center"
+				       LineBreakMode="WordWrap" />
+				<Label Text="tap anywhere to continue"
+				       TextColor="#7755AA"
+				       FontSize="12"
+				       FontAttributes="Italic"
+				       HorizontalOptions="Center"
+				       Margin="0,10,0,0" />
+			</VerticalStackLayout>
+		</Border>
+
+		<!-- Done overlay -->
+		<Border Grid.Row="0" Grid.RowSpan="8"
+		        x:Name="DuplicatePopup"
+		        IsVisible="false"
+		        BackgroundColor="#BB0D0B1A"
+		        StrokeThickness="0"
+		        HorizontalOptions="Fill"
+		        VerticalOptions="Fill"
+		        ZIndex="50">
+			<Border.GestureRecognizers>
+				<TapGestureRecognizer Tapped="OnDuplicateDismissed" />
+			</Border.GestureRecognizers>
+			<Border StrokeShape="RoundRectangle 12" Stroke="#B266FF" StrokeThickness="1.5" BackgroundColor="#EE1A0A2E" Padding="25,20" HorizontalOptions="Center" VerticalOptions="Center" MaximumWidthRequest="320">
+				<Border.Shadow>
+					<Shadow Brush="#B266FF" Offset="0,0" Radius="20" Opacity="0.7" />
+				</Border.Shadow>
+				<VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+					<Label x:Name="DuplicateLabel"
+					       Text="Already in your list!"
+					       TextColor="#E0AAFF"
+					       FontSize="18"
+					       FontAttributes="Bold,Italic"
+					       HorizontalOptions="Center"
+					       HorizontalTextAlignment="Center"
+					       CharacterSpacing="1">
+						<Label.Shadow>
+							<Shadow Brush="#B266FF" Offset="0,0" Radius="15" Opacity="0.8" />
+						</Label.Shadow>
+					</Label>
+					<Label Text="tap anywhere to dismiss"
+					       TextColor="#7755AA"
+					       FontSize="11"
+					       FontAttributes="Italic"
+					       HorizontalOptions="Center"
+					       Margin="0,5,0,0" />
+				</VerticalStackLayout>
+			</Border>
+		</Border>
+
+		<!-- Done overlay -->
+		<Border Grid.Row="0" Grid.RowSpan="8"
+		        x:Name="ToastBorder"
+		        IsVisible="false"
+		        Opacity="0"
+		        BackgroundColor="#AA1A0A2E"
+		        StrokeThickness="0"
+		        HorizontalOptions="Fill"
+		        VerticalOptions="Fill">
+			<Label x:Name="ToastLabel"
+			       Text="✦  D O N E  ✦"
+			       TextColor="#E0AAFF"
+			       FontSize="36"
+			       FontAttributes="Bold,Italic"
+			       CharacterSpacing="3"
+			       HorizontalOptions="Center"
+			       HorizontalTextAlignment="Center"
+			       VerticalOptions="Center">
+				<Label.Shadow>
+					<Shadow Brush="#B266FF" Offset="0,0" Radius="20" Opacity="0.8" />
+				</Label.Shadow>
+			</Label>
+		</Border>
+
+		<!-- Ad Banner -->
+		<local:AdBannerView Grid.Row="6" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0" />
+
+		<!-- Row 7: second full-width banner, stacked under the first one -->
+		<local:AdBannerView Grid.Row="7" OverrideAdUnitId="ca-app-pub-3940256099942544/6300978111" Margin="0,-2,0,0" />
+	</Grid>
+</ContentPage>
